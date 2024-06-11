@@ -1,0 +1,92 @@
+<section>
+	<section data-auto-animate>
+		<h3>short variable declarations eagerly declare but fall back to shadowing*</h3>
+
+		<p>* in <a href="https://go.dev/play/p/Sjpj0ihJbKM">some</a> cases</p>
+	</section>
+
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func tuplerator(a, b int) (int, int) {
+				return a, b
+			}
+
+			a, b := tuplerator(13, 37)
+		</code></pre>
+	</section>
+
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func tuplerator(a, b int) (int, int) {
+				return a, b
+			}
+
+			a, b := tuplerator(13, 37)
+			a, b := tuplerator(4, 2) // doesn't work
+		</code></pre>
+
+		<aside class="notes">
+			NS: but putting it in a new scope...
+		</aside>
+	</section>
+
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func tuplerator(a, b int) (int, int) {
+				return a, b
+			}
+
+			a, b := tuplerator(13, 37)
+			{
+				a, b := tuplerator(4, 2) // does work
+				// a: 4, b: 2
+			}
+			// a: 13, b: 37
+		</code></pre>
+
+		<aside class="notes">
+			huh?!<br/>
+			NS: same scope but one old one new var...
+		</aside>
+	</section>
+
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func tuplerator(a, b int) (int, int) {
+				return a, b
+			}
+
+			a, b := tuplerator(13, 37)
+			a, c := tuplerator(4, 2)
+			// a: 4, b: 37, c: 2
+		</code></pre>
+	</section>
+
+	<section
+		data-auto-animate
+		data-background-image="/static/assets/wat-rotating.gif"
+		data-background-size="contain"
+	></section>
+
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func tuplerator(a, b int) (int, int) {
+				return a, b
+			}
+
+			a, b := tuplerator(13, 37)
+			{
+				a, c := tuplerator(4, 2)
+				// a: 4, b: 37, c: 2
+			}
+			// a: 13, b: 37, c: does not exist
+		</code></pre>
+	</section>
+
+	<section
+		data-auto-animate
+		data-background-image="/static/assets/wat-is-love.gif"
+		data-background-size="contain"
+	></section>
+</section>
+

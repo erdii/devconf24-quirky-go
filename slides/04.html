@@ -1,0 +1,68 @@
+<section>
+	<section data-auto-animate>
+		<h1>nil is not nil</h1>
+		
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func getNil() io.Writer {
+				var writer *bufio.Writer // pointer to a struct
+				return writer
+			}
+		</code></pre>
+	
+		<aside class="notes">
+		</aside>
+	</section>
+	
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func getNil() io.Writer {
+				var writer *bufio.Writer // pointer to a struct
+				
+				// what will this print?
+				fmt.Println("is nil:", writer == nil)
+				
+				return writer
+			}
+		</code></pre>
+	</section>
+	
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func getNil() io.Writer {
+				var writer *bufio.Writer // pointer to a struct
+				
+				// what will this print?
+				fmt.Println("is nil:", writer == nil)
+				// => is nil: true
+				
+				return writer
+			}
+		</code></pre>
+	</section>
+	
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			n := getNil()
+		</code></pre>
+	</section>
+	
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			n := getNil()
+			fmt.Println("is nil:", n == nil)
+		</code></pre>
+	</section>
+	
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			n := getNil()
+			fmt.Println("is nil:", n == nil)
+			// is nil: false
+		</code></pre>
+	</section>
+	
+	<section
+		data-background-image="/static/assets/wat-glitch.gif"
+		data-background-size="contain"
+	></section>
+</section>

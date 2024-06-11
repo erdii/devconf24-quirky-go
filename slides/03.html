@@ -1,0 +1,135 @@
+<section>
+	<section data-auto-animate>
+		<h3>defer errors</h3>
+		
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func doIO() error {
+				defer unhappiness();
+			}
+		</code></pre>
+	</section>
+	
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func doIO() error {
+				f, err := f.Create("my-file.txt")
+				if err != nil { return fmt.Errorf("creating file: %w", err) }
+				defer f.Close();
+	
+				_, err := f.WriteString(`"Meow!" (=^･ω･^=)`)
+				return err
+			}
+		</code></pre>
+
+		<aside class="notes">
+			What if Close() is naughty and returns an error?
+			Maybe I can pass the error through to the returning outer function?
+		</aside>
+	</section>
+
+	<section>
+		Testing time!
+	</section>
+
+	<section>
+		<pre><code class="language-golang" data-trim data-line-numbers>
+			func TestReturn(t *testing.T) {
+				actual := func() error {
+					var err error
+					defer func() {
+						err = expected
+					}()
+					return err
+				}()
+			
+				assert.Equal(t, expected, actual)
+			}
+		</code></pre>
+	</section>
+
+	<section>
+		<pre><code data-trim><script type="text/template">
+			Error: Not equal:
+				expected: *errors.errorString(
+							&errors.errorString{s:"expected"})
+				actual  : <nil>(<nil>)
+		</script></code></pre>
+	</section>
+
+	<section
+		data-auto-animate
+		data-background-image="/static/assets/wat-dog.gif"
+		data-background-size="contain"
+	></section>
+
+	<section>
+		This doesn't work because the <a href="https://go.dev/ref/spec#Defer_statements">go spec</a> states,
+		that a defered function executes <em>after</em> the return values are set by the return statement.
+
+		<aside class="notes">
+			let's try using a named return instead
+		</aside>
+	</section>
+
+
+	<section>
+		<pre><code class="language-golang" data-trim data-line-numbers>
+			func TestNamedReturn(t *testing.T) {
+				actual := func() (err error) {
+					defer func() {
+						err = expected
+					}()
+					return err
+				}()
+			
+				assert.Equal(t, expected, actual)
+			}
+		</code></pre>
+	</section>
+
+	<section>
+		<pre><code data-trim><script type="text/template">
+			Running tool: /usr/bin/go test -timeout 30s \
+				-coverprofile=/tmp/vscode-gomvRg92/go-code-cover \
+				-run ^TestNamedReturn$ devconf24-quirky-go/quirks/deferr
+
+			ok        devconf24-quirky-go/quirks/deferr 0.002s
+			coverage: [no statements]
+		</script></code></pre>
+
+		<p class="fragment">Hooray this works!</p>
+		<p class="fragment">As long as the outer function itself doesn't return an error, right?</p>
+
+		<aside class="notes">
+			<p class="fragment">But what if the outer function already encountered an error and stored it in err?
+		</aside>
+		
+	</section>
+
+
+	<section>
+		<pre><code class="language-golang" data-trim data-line-numbers>
+			func TestNamedReturnShadow(t *testing.T) {
+				actual := func() (err error) {
+					defer func() {
+						err = deferedError
+					}()
+
+					err = expectedError
+					return err
+				}()
+			
+				assert.Equal(t, expectedError, actual)
+			}
+		</code></pre>
+	</section>
+
+	<section>
+		<pre><code data-trim><script type="text/template">
+			Error: Not equal:
+				expected: &errors.errorString{s:"expected"}
+				actual  : &errors.errorString{s:"spanish inquisition"}
+		</script></code></pre>
+		<img src="/static/assets/spanish-inquisition.jpg"/>
+	</section>
+</section>
