@@ -76,6 +76,7 @@ func main() {
 
 		if err := tpl.ExecuteTemplate(os.Stdout, "template.html", map[string]any{
 			"slides": slides,
+			"islive": false,
 		}); err != nil {
 			panic(err)
 		}
@@ -165,6 +166,7 @@ func main() {
 
 		if err := tpl.ExecuteTemplate(w, "template.html", map[string]any{
 			"slides": slides,
+			"islive": true,
 		}); err != nil {
 			panic(err)
 		}
