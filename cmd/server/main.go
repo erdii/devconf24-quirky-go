@@ -19,8 +19,6 @@ const (
 	slidesDir = "./slides"
 )
 
-var render = false
-
 var tpl = template.Must(template.New("").Funcs(template.FuncMap{
 	"safeHTML": func(html string) template.HTML {
 		return template.HTML(html)
@@ -55,7 +53,9 @@ func listSlides(dir string) ([]slide, error) {
 }
 
 func main() {
-	if render {
+	render := os.Getenv("RENDER")
+
+	if render != "" {
 		slides, err := listSlides(slidesDir)
 		if err != nil {
 			panic(fmt.Errorf("listing slides: %w", err))
@@ -67,14 +67,14 @@ func main() {
 		}
 
 		defer func() {
-			if cerr := f.Close(); cerr != nil && err == nil {
-				panic(fmt.Errorf("closing file: %w", cerr))
-			} else if cerr != nil {
+			if cerr := f.Close(); cerr != nil && err != nil {
 				panic(fmt.Errorf("closing file: %w while handling another error: %w", cerr, err))
+			} else if cerr != nil {
+				panic(fmt.Errorf("closing file: %w", cerr))
 			}
 		}()
 
-		if err := tpl.ExecuteTemplate(os.Stdout, "template.html", map[string]any{
+		if err := tpl.ExecuteTemplate(f, "template.html", map[string]any{
 			"slides": slides,
 			"islive": false,
 		}); err != nil {
