@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <script src="http://localhost:35729/livereload.js"></script>
+  {{ if .islive }}
+    <script src="http://localhost:35729/livereload.js"></script>
+  {{ end }}
 
-  <link rel="stylesheet" href="/static/dist/reset.css">
-  <link rel="stylesheet" href="/static/dist/reveal.css">
-  <link rel="stylesheet" href="/static/dist/theme/black.css">
+  <link rel="stylesheet" href="./static/dist/reset.css">
+  <link rel="stylesheet" href="./static/dist/reveal.css">
+  <link rel="stylesheet" href="./static/dist/theme/black.css">
 
   <!-- Theme used for syntax highlighted code -->
-  <link rel="stylesheet" href="/static/plugin/highlight/monokai.css">
+  <link rel="stylesheet" href="./static/plugin/highlight/monokai.css">
   <style>
     ::-webkit-scrollbar {
       width: 0px;
@@ -29,10 +31,10 @@
     </div>
   </div>
 
-  <script src="/static/dist/reveal.js"></script>
-  <script src="/static/plugin/notes/notes.js"></script>
-  <script src="/static/plugin/markdown/markdown.js"></script>
-  <script src="/static/plugin/highlight/highlight.js"></script>
+  <script src="./static/dist/reveal.js"></script>
+  <script src="./static/plugin/notes/notes.js"></script>
+  <script src="./static/plugin/markdown/markdown.js"></script>
+  <script src="./static/plugin/highlight/highlight.js"></script>
   <script>
     // More info about initialization & config:
     // - https://revealjs.com/initialization/
