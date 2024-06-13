@@ -51,6 +51,22 @@
 	</section>
 
 	<section>
+		<pre><code class="language-golang" data-trim data-line-numbers="5|5,3">
+			func TestReturn(t *testing.T) {
+				actual := func() error {
+					var err error
+					defer func() {
+						err = expectedError
+					}()
+					return err
+				}()
+			
+				assert.Equal(t, expectedError, actual)
+			}
+		</code></pre>
+	</section>
+
+	<section>
 		<pre><code data-trim><script type="text/template">
 			Error: Not equal:
 				expected: *errors.errorString(
@@ -73,9 +89,8 @@
 		</aside>
 	</section>
 
-
 	<section>
-		<pre><code class="language-golang" data-trim data-line-numbers>
+		<pre><code class="language-golang" data-trim data-line-numbers="|2,4">
 			func TestNamedReturn(t *testing.T) {
 				actual := func() (err error) {
 					defer func() {
@@ -131,5 +146,9 @@
 				actual  : &errors.errorString{s:"spanish inquisition"}
 		</script></code></pre>
 		<img src="./static/assets/spanish-inquisition.jpg"/>
+
+		<aside class="notes">
+			let's talk about something else
+		</aside>
 	</section>
 </section>
