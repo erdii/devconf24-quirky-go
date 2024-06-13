@@ -1,21 +1,20 @@
 <section>
-	<section data-auto-animate>
+	<section>
 		<h3>so what actually happens with .Close() errors?</h3>
 	</section>
 
 	<section
-		data-auto-animate
 		data-background-image="./static/assets/cake-is-a-lie.jpg"
 		data-background-size="contain"
 	></section>
 
-	<section data-auto-animate>
+	<section>
 		<p>
 			I don't know.
 		</p>
 	</section>
 
-	<section data-auto-animate>
+	<section>
 		<p>
 			the <a href="https://man7.org/linux/man-pages/man2/close.2.html#NOTES">
 				man pages for close(2)
@@ -31,5 +30,50 @@ when closing a file may lead to silent loss of data.</pre>
 
 A careful programmer who wants to know about I/O errors may
 precede close() with a call to fsync(2).</pre>
+	</section>
+
+	<section
+		data-background-image="./static/assets/puppet-awkward.gif"
+		data-background-size="contain"
+	>
+		<aside class="notes">
+			uh huh... ah well... to be honest
+			<br/>
+			i've never actually seen code that does this.
+			<br/>
+			should probably stick to databases :sweat:
+			<br/>
+
+			oh! by the way:
+		</aside>
+	</section>
+
+	<section>
+		<h3>it's possible to wrap multiple errors</h3>
+	</section>
+
+	<section data-auto-animate>
+		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
+			func TestNamedReturnWrap(t *testing.T) {
+				actual := func() (err error) {
+					err = expectedError
+					defer func() {
+						cErr := deferedError
+						if err != nil && cErr != nil {
+							err = fmt.Errorf(`defered func errored but
+								surrounding function also encountered an error.
+								surrounding err: %w
+								defered err: %w`, err, cErr)
+						} else if cErr != nil {
+							err = cErr
+						}
+					}()
+					return err
+				}()
+			
+				assert.ErrorIs(t, actual, expected)
+				assert.ErrorIs(t, actual, defered)
+			}
+		</code></pre>
 	</section>
 </section>

@@ -1,20 +1,10 @@
 <section>
-	<section data-auto-animate>
+	<section>
 		<h1>nil is not nil</h1>
 		
 		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
 			func getNil() io.Writer {
 				var writer *bufio.Writer // pointer to a struct
-				return writer
-			}
-		</code></pre>
-	</section>
-	
-	<section data-auto-animate>
-		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
-			func getNil() io.Writer {
-				var writer *bufio.Writer // pointer to a struct
-				fmt.Println("is nil:", writer == nil)
 				return writer
 			}
 		</code></pre>
@@ -28,6 +18,10 @@
 				return writer
 			}
 		</code></pre>
+
+		<aside class="notes">
+			question: what does this equallity check print?
+		</aside>
 	</section>
 	
 	<section data-auto-animate>
@@ -39,26 +33,29 @@
 				return writer
 			}
 		</code></pre>
+
+		<aside class="notes">
+			now lets use this func
+		</aside>
 	</section>
 	
-	<section data-auto-animate>
+	<section>
 		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
 			n := getNil()
 		</code></pre>
 	</section>
-	
-	<section data-auto-animate>
-		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
-			n := getNil()
-			fmt.Println("is nil:", n == nil)
-		</code></pre>
-	</section>
-	
+
 	<section data-auto-animate>
 		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers="2">
 			n := getNil()
 			fmt.Println("is nil:", n == nil)
 		</code></pre>
+
+		<aside class="notes">
+			and this?
+			<br/>
+			they'll probably guess wrong
+		</aside>
 	</section>
 
 	<section data-auto-animate>
@@ -68,7 +65,7 @@
 			// is nil: false
 		</code></pre>
 	</section>
-	
+
 	<section
 		data-background-image="./static/assets/wat-glitch.gif"
 		data-background-size="contain"

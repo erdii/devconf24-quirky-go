@@ -1,5 +1,5 @@
 <section>
-	<section data-auto-animate>
+	<section>
 		<h3>defer errors</h3>
 		
 		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
@@ -9,7 +9,7 @@
 		</code></pre>
 	</section>
 	
-	<section data-auto-animate>
+	<section>
 		<pre data-id="code-animation"><code class="language-golang" data-trim data-line-numbers>
 			func doIO() error {
 				f, err := f.Create("my-file.txt")
@@ -22,7 +22,10 @@
 		</code></pre>
 
 		<aside class="notes">
+			who hasn't?
+			<br/><br/>
 			What if Close() is naughty and returns an error?
+			<br/><br/>
 			Maybe I can pass the error through to the returning outer function?
 		</aside>
 	</section>
@@ -37,12 +40,12 @@
 				actual := func() error {
 					var err error
 					defer func() {
-						err = expected
+						err = expectedError
 					}()
 					return err
 				}()
 			
-				assert.Equal(t, expected, actual)
+				assert.Equal(t, expectedError, actual)
 			}
 		</code></pre>
 	</section>
@@ -57,7 +60,6 @@
 	</section>
 
 	<section
-		data-auto-animate
 		data-background-image="./static/assets/wat-dog.gif"
 		data-background-size="contain"
 	></section>
@@ -77,12 +79,12 @@
 			func TestNamedReturn(t *testing.T) {
 				actual := func() (err error) {
 					defer func() {
-						err = expected
+						err = expectedError
 					}()
 					return err
 				}()
 			
-				assert.Equal(t, expected, actual)
+				assert.Equal(t, expectedError, actual)
 			}
 		</code></pre>
 	</section>
@@ -101,11 +103,9 @@
 		<p class="fragment">As long as the outer function itself doesn't return an error, right?</p>
 
 		<aside class="notes">
-			<p class="fragment">But what if the outer function already encountered an error and stored it in err?
+			But what if the outer function already encountered an error and stored it in err?
 		</aside>
-		
 	</section>
-
 
 	<section>
 		<pre><code class="language-golang" data-trim data-line-numbers>
